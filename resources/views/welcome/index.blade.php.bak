@@ -1,0 +1,398 @@
+@extends(welcomeTheme().'layouts.master')
+@section('title')
+<title>{{websiteTitle()}}</title>
+@endsection
+@section('SEO')
+<meta name="title" property="og:title" content="{{general()->meta_title}}" />
+<meta name="description" property="og:description" content="{!!general()->meta_description!!}" />
+<meta name="keyword" property="og:keyword" content="{{general()->meta_keyword}}" />
+<meta name="image" property="og:image" content="{{asset(general()->logo())}}" />
+<meta name="url" property="og:url" content="{{route('index')}}" />
+<link rel="canonical" href="{{route('index')}}">
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "url": "{{route('index')}}",
+    "name": "{{websiteTitle()}}",
+    "description": "{!!general()->meta_description!!}"
+}
+</script>
+@endsection
+@push('css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+@endpush
+
+@section('contents')
+@php
+    $txPosts = $latestPosts ?? collect();
+    $txServices = $latestServices ?? collect();
+@endphp
+
+<!-- ================= Hero (Admin > Sliders > "Front Page Slider") ================= -->
+@php
+    // Each active slide with a "Slide Name" becomes a hero slide:
+    // Sub Title = small text above the heading, Slide Name = heading, Description = paragraph,
+    // Button Text/Link = button, Slide Image = background photo.
+    $txHeroTag = 'Technology Related Consultancy'; // used when a slide has no Sub Title
+    $txHeroSlides = collect();
+    if ($txSlider = slider('Front Page Slider')) {
+        foreach ($txSlider->subSliders as $slide) {
+            if (!trim((string) $slide->name)) continue;
+            $link = trim((string) $slide->seo_description);
+            $txHeroSlides->push([
+                'tag'     => trim((string) $slide->short_description) ?: $txHeroTag,
+                'title'   => $slide->name,
+                'text'    => trim(strip_tags((string) $slide->description)),
+                'btnText' => $slide->seo_title,
+                'btnLink' => $link === '' ? '#services' : (preg_match('~^(https?:|#|mailto:|tel:)~i', $link) ? $link : url($link)),
+                'image'   => $slide->imageFile ? asset($slide->image()) : null,
+            ]);
+        }
+    }
+    // Default hero when no slide has been set up yet
+    if ($txHeroSlides->isEmpty()) {
+        $txHeroSlides->push([
+            'tag'     => $txHeroTag,
+            'title'   => "We transform ideas\ninto technology",
+            'text'    => 'We provide the most responsive and functional IT design for companies and businesses worldwide.',
+            'btnText' => 'Read More',
+            'btnLink' => '#services',
+            'image'   => null,
+        ]);
+    }
+@endphp
+<section class="tx-hero">
+    <div class="swiper tx-hero-slider">
+        <div class="swiper-wrapper">
+            @foreach($txHeroSlides as $i => $hs)
+            <div class="swiper-slide tx-hero-slide {{ $i == 0 ? 'swiper-slide-active' : '' }}">
+                <div class="tx-hero-bg" @if($hs['image']) style="background-image:url('{{ $hs['image'] }}')" @endif></div>
+                <div class="tx-hero-shape s1"></div>
+                <div class="tx-hero-shape s2"></div>
+                <svg class="tx-hero-lines" viewBox="0 0 1440 816" preserveAspectRatio="none" aria-hidden="true">
+                    <line x1="0" y1="600" x2="560" y2="40" />
+                    <line x1="760" y1="0" x2="1440" y2="560" />
+                    <line x1="1120" y1="816" x2="1440" y2="530" />
+                </svg>
+                <div class="container">
+                    <div class="tx-hero-content">
+                        <span class="tx-sub">{{ $hs['tag'] }}</span>
+                        @if($i == 0)
+                        <h1 class="tx-hero-title">{!! nl2br(e($hs['title'])) !!}</h1>
+                        @else
+                        <h2 class="tx-hero-title">{!! nl2br(e($hs['title'])) !!}</h2>
+                        @endif
+                        @if($hs['text'])
+                        <p>{!! nl2br(e($hs['text'])) !!}</p>
+                        @endif
+                        @if($hs['btnText'])
+                        <a href="{{ $hs['btnLink'] }}" class="tx-btn">{{ $hs['btnText'] }}</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @if($txHeroSlides->count() > 1)
+        <div class="tx-hero-dots"></div>
+        @endif
+    </div>
+</section>
+
+<!-- ================= Services ================= -->
+<section class="tx-services" id="services">
+    <div class="tx-circuit"></div>
+    <div class="container">
+        @php
+            $txIcons = ['ti ti-fingerprint','ti ti-shield-lock','ti ti-cloud-network','ti ti-hexagon-3d'];
+            $txDefaultText = "Accelerate innovation with world-class tech teams We'll match you to an entire remote team of incredible freelance talent.";
+            // All services from Admin > Services; placeholder cards only when none exist yet
+            $txCards = $txServices->map(fn($svc) => [
+                'title' => $svc->name,
+                'text'  => $svc->short_description ? \Illuminate\Support\Str::limit(strip_tags($svc->short_description), 115) : $txDefaultText,
+                'link'  => route('serviceView', $svc->slug ?: 'no-title'),
+            ]);
+            if ($txCards->isEmpty()) {
+                $txCards = collect(['Infrastructure Technology','IT Consultancy & solution','Cloud managed services','Blockchain technology'])
+                    ->map(fn($t) => ['title' => $t, 'text' => $txDefaultText, 'link' => '#']);
+            }
+        @endphp
+        <div class="swiper tx-service-slider">
+            <div class="swiper-wrapper">
+                @foreach($txCards->values() as $k => $card)
+                <div class="swiper-slide">
+                    <div class="tx-service-card">
+                        <div class="icon"><i class="{{ $txIcons[$k % count($txIcons)] }}"></i></div>
+                        <h4><a href="{{ $card['link'] }}">{{ $card['title'] }}</a></h4>
+                        <p>{{ $card['text'] }}</p>
+                        <a href="{{ $card['link'] }}" class="tx-readmore"><span><i class="ti ti-plus"></i></span> Read More</a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        <div class="tx-slider-nav tx-service-nav">
+            <button type="button" class="tx-service-prev" aria-label="Previous"><i class="ti ti-arrow-left"></i></button>
+            <button type="button" class="tx-service-next" aria-label="Next"><i class="ti ti-arrow-right"></i></button>
+        </div>
+    </div>
+</section>
+
+<!-- ================= Who we are ================= -->
+@php
+    // Edit these to your real details
+    $txWhoName = 'Md. Zahangir Hossain';
+    $txWhoRole = 'CEO, Yes Global Tech';
+    $txWhoVideo = ''; // e.g. https://www.youtube.com/embed/VIDEO_ID
+@endphp
+<section class="tx-who">
+    <div class="container">
+        <div class="tx-who-grid">
+            <div class="tx-who-text">
+                <span class="tx-sub">Who We Are</span>
+                <h2>Global Web &amp; Software Solutions, Built Around Your Business.</h2>
+                <p>Since 2012, Yes Global Tech has helped businesses grow with custom websites, software, and IT support. From our home in Bangladesh, we serve clients across Japan, Australia, the UK, Malaysia, and beyond. Our experienced team turns ideas into reliable digital products, delivered on time and built to scale.</p>
+                <div class="tx-who-foot">
+                    <div class="tx-who-sign">
+                        <span class="sign">{{$txWhoName}}</span>
+                        <h6>{{$txWhoName}}</h6>
+                        <small>{{$txWhoRole}}</small>
+                    </div>
+                    @if(general()->mobile)
+                    <div class="tx-who-call">
+                        <p>Call to ask any question</p>
+                        <a href="tel:{{ preg_replace('/[^0-9+]/', '', general()->mobile) }}">{{general()->mobile}}</a>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            <div class="tx-who-media">
+                <div class="big"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=820&h=1100&q=75" alt="Our team at work" loading="lazy"></div>
+                <div class="small"><img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=840&h=620&q=75" alt="Our office" loading="lazy"></div>
+                <a href="{{ $txWhoVideo ?: '#' }}" class="tx-play" data-video="{{$txWhoVideo}}" aria-label="Play video"><i class="fa-solid fa-play"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if($txWhoVideo)
+<div class="tx-video-modal" id="txVideo">
+    <button type="button" class="tx-search-close" aria-label="Close">&times;</button>
+    <div class="frame"><iframe src="" allow="autoplay; encrypted-media" allowfullscreen title="Video"></iframe></div>
+</div>
+@endif
+
+<!-- ================= Counter ================= -->
+<section class="tx-counter">
+    <div class="container">
+        <div class="tx-counter-grid">
+            <div class="tx-counter-item">
+                <div class="ic"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                <div><h3><span class="tx-count" data-target="200">0</span>+</h3><p>Happy Clients</p></div>
+            </div>
+            <div class="tx-counter-item">
+                <div class="ic"><i class="fa-regular fa-lightbulb"></i></div>
+                <div><h3><span class="tx-count" data-target="350">0</span>+</h3><p>Completed Projects</p></div>
+            </div>
+            <div class="tx-counter-item">
+                <div class="ic"><i class="fa-solid fa-user-gear"></i></div>
+                <div><h3><span class="tx-count" data-target="15">0</span>+</h3><p>Skilled Experts</p></div>
+            </div>
+            <div class="tx-counter-item">
+                <div class="ic"><i class="fa-solid fa-earth-asia"></i></div>
+                <div><h3><span class="tx-count" data-target="5">0</span>+</h3><p>Served Countries</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= Case studies ================= -->
+<section class="tx-case">
+    <div class="tx-center">
+        <span class="tx-sub">Form Our Case Studies</span>
+        <h2 class="tx-title">We delivered best solution</h2>
+    </div>
+    <div class="swiper tx-case-slider">
+        <div class="swiper-wrapper">
+            {{-- Admin > Projects (featured first, latest 8) --}}
+            @foreach(projectCards(8, true) as $p)
+            <div class="swiper-slide">
+                @include(welcomeTheme().'layouts.includes.projectCard')
+            </div>
+            @endforeach
+        </div>
+        <div class="tx-dots tx-case-dots"></div>
+    </div>
+</section>
+
+<!-- ================= Testimonials ================= -->
+<section class="tx-testi">
+    <div class="container">
+        <div class="tx-center">
+            <span class="tx-sub">Testimonial</span>
+            <h2 class="tx-title">20k+ satisfied clients worldwide</h2>
+        </div>
+        <div class="swiper tx-testi-slider">
+            <div class="swiper-wrapper">
+                {{-- Admin > Testimonials (featured first, then newest) --}}
+                @foreach(testimonialCards() as $t)
+                <div class="swiper-slide">
+                    <div class="tx-testi-card">
+                        <div class="tx-testi-img">
+                            @if($t['image'])
+                            <img src="{{ $t['image'] }}" alt="{{ $t['name'] }}" loading="lazy">
+                            @else
+                            <span class="tx-testi-initials">{{ $t['initials'] }}</span>
+                            @endif
+                        </div>
+                        <div class="q"><i class="fa-regular fa-comments"></i></div>
+                        <p>{{ $t['text'] }}</p>
+                        <h6>{{ $t['name'] }}@if($t['role']) <span>/ {{ $t['role'] }}</span>@endif</h6>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="tx-dots tx-testi-dots"></div>
+        </div>
+    </div>
+</section>
+
+@include(welcomeTheme().'layouts.includes.brands')
+
+<!-- ================= Team / Blog ================= -->
+<section class="tx-team">
+    <div class="container">
+        <div class="tx-center">
+            <span class="tx-sub">Our Expert Team</span>
+            <h2 class="tx-title">We have world expert team</h2>
+        </div>
+        <div class="tx-blog-grid home">
+            @php
+                $txBlogDefaults = [
+                    ['img'=>'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=900&q=75','day'=>'26','mon'=>'Jun','title'=>'Machine Learning Basics Everyone Should Know'],
+                    ['img'=>'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=900&q=75','day'=>'29','mon'=>'May','title'=>'The evidence on how to find the right career'],
+                    ['img'=>'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=75','day'=>'22','mon'=>'May','title'=>'Who was the first person in artificial intelligence?'],
+                ];
+            @endphp
+            @foreach($txBlogDefaults as $k => $b)
+            @php $post = $txPosts[$k] ?? null; @endphp
+            <div class="tx-blog-card">
+                <div class="thumb">
+                    <img src="{{ $post && $post->imageFile ? asset($post->image()) : $b['img'] }}" alt="{{ $post ? $post->name : $b['title'] }}">
+                    <div class="tx-date">
+                        <b>{{ $post ? $post->created_at->format('d') : $b['day'] }}</b>
+                        <small>{{ $post ? $post->created_at->format('M') : $b['mon'] }}</small>
+                    </div>
+                </div>
+                <div class="tx-blog-body">
+                    <div class="tx-meta">
+                        <span><i class="fa-regular fa-user"></i>{{ $post && $post->user ? $post->user->name : 'Mark Alen' }}</span>
+                        <span><i class="fa-regular fa-comments"></i>Comment 3</span>
+                    </div>
+                    <h4><a href="{{ $post ? route('blogView', $post->slug ?: 'no-title') : '#' }}">{{ $post ? $post->name : $b['title'] }}</a></h4>
+                    <a href="{{ $post ? route('blogView', $post->slug ?: 'no-title') : '#' }}" class="tx-more">Read More <i class="fa-solid fa-arrow-right-long"></i></a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<div class="tx-cta-wrap" id="contact">
+    <div class="container">
+        <div class="tx-cta-outer">
+            <div class="tx-cta-icon"><i class="fa-solid fa-headset"></i></div>
+            <div class="tx-cta">
+                <h3>We're delivering the best customer experience</h3>
+                <a href="{{ general()->email ? 'mailto:'.general()->email : '#' }}" class="tx-btn">Get Started</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection
+
+@push('js')
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    // Counter animation
+    var txCounted = false;
+    new IntersectionObserver(function(entries, obs){
+        if(!entries[0].isIntersecting || txCounted) return;
+        txCounted = true;
+        document.querySelectorAll('.tx-count').forEach(function(el){
+            var target = +el.dataset.target, start = null;
+            function step(ts){
+                if(!start) start = ts;
+                var p = Math.min((ts - start) / 2000, 1);
+                el.textContent = Math.floor(p * target);
+                if(p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        });
+        obs.disconnect();
+    }, {threshold:.3}).observe(document.querySelector('.tx-counter'));
+
+    // "Who we are" video popup
+    (function(){
+        var modal = document.getElementById('txVideo'), btn = document.querySelector('.tx-play');
+        if(!btn) return;
+        btn.addEventListener('click', function(e){
+            e.preventDefault();
+            if(!modal) return;
+            var src = btn.dataset.video;
+            modal.querySelector('iframe').src = src + (src.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
+            modal.classList.add('open');
+        });
+        if(!modal) return;
+        modal.addEventListener('click', function(e){
+            if(e.target === modal || e.target.closest('.tx-search-close')){
+                modal.classList.remove('open');
+                modal.querySelector('iframe').src = '';
+            }
+        });
+    })();
+
+    // Sliders
+    // Hero slider (only when the admin has more than one slide)
+    if (document.querySelectorAll('.tx-hero-slide').length > 1) {
+        new Swiper('.tx-hero-slider', {
+            effect: 'fade', fadeEffect: {crossFade: true},
+            loop: true, speed: 900,
+            autoplay: {delay: 6000, disableOnInteraction: false},
+            pagination: {el: '.tx-hero-dots', clickable: true}
+        });
+    }
+
+    // Services slider: 4 cards on desktop, auto-slides one card at a time
+    var txServiceLoop = document.querySelectorAll('.tx-service-slider .swiper-slide').length > 4;
+    new Swiper('.tx-service-slider', {
+        loop:txServiceLoop, rewind:!txServiceLoop, spaceBetween:24, speed:700,
+        autoplay:{delay:3500, disableOnInteraction:false, pauseOnMouseEnter:true},
+        slidesPerView:1,
+        breakpoints:{576:{slidesPerView:2}, 992:{slidesPerView:3}, 1200:{slidesPerView:4}},
+        navigation:{prevEl:'.tx-service-prev', nextEl:'.tx-service-next'}
+    });
+
+    // Case studies: 3 full cards on desktop, auto-slides one at a time.
+    // Loop needs at least slidesPerView + 1 slides, otherwise a gap shows on the right.
+    var txCaseLoop = document.querySelectorAll('.tx-case-slider .swiper-slide').length > 3;
+    new Swiper('.tx-case-slider', {
+        loop:txCaseLoop, rewind:!txCaseLoop, spaceBetween:20, speed:700,
+        autoplay:{delay:4000, disableOnInteraction:false, pauseOnMouseEnter:true},
+        slidesPerView:1,
+        breakpoints:{768:{slidesPerView:2}, 1200:{slidesPerView:3}},
+        pagination:{el:'.tx-case-dots', clickable:true}
+    });
+    new Swiper('.tx-testi-slider', {
+        loop:true, spaceBetween:40, speed:700,
+        autoplay:{delay:5000, disableOnInteraction:false},
+        slidesPerView:1,
+        breakpoints:{992:{slidesPerView:2}},
+        pagination:{el:'.tx-testi-dots', clickable:true}
+    });
+</script>
+@endpush
