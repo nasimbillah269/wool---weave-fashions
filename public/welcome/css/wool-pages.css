@@ -211,7 +211,7 @@
 
 /* ---------- Responsive ---------- */
 @media (min-width:1200px) and (max-width:1439px){
-    .ww-menu > li > a{gap:1px}
+    .ww-menu > li > a{gap:15px}
     .ww-menu > li > a i{font-size:9px}
 }
 @media (max-width:1199px){

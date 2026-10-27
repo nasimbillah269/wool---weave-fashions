@@ -269,17 +269,20 @@ main{overflow-x:clip}
 @media (max-width:1599px){
     .ww-menu{gap:14px}
     .ww-header-in{gap:20px}
-    .ww-lang{display:none}
+    .ww-header-actions{gap:14px}
     .ww-strip-script{display:none}
     .ww-stats-in{grid-template-columns:1fr}
     .ww-goal{margin:0 0 48px;max-width:720px}
     .ww-stats-grid{padding-bottom:40px}
 }
 @media (min-width:1200px) and (max-width:1439px){
-    /* Laptop: keep the inline menu, tighten it so all 11 items fit */
+    /* Laptop: keep the inline menu and header actions, tighten them so everything fits */
     .ww-container{padding:0 20px}
     .ww-header-in{gap:14px}
-    .ww-header-cta{display:none}
+    .ww-header-actions{gap:10px}
+    .ww-lang{font-size:10.5px;letter-spacing:.06em;gap:3px}
+    .ww-lang i{font-size:14px}
+    .ww-header-cta{padding:10px 14px;font-size:9.5px;letter-spacing:.1em;white-space:nowrap}
     .ww-logo-main{gap:8px}
     .ww-logo-w{width:40px}
     .ww-logo-main .ww-logo-text b{font-size:16px;letter-spacing:.04em}
