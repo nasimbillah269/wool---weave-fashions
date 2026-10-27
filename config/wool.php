@@ -54,7 +54,6 @@ return [
             ['Patent & IP Vault', 'patents'],
         ]],
         ['Supply Chain', 'supply-chain'],
-        ['Investors', 'investors'],
         ['Media', 'media'],
         ['Careers', 'careers'],
         ['Contact', 'contact'],
