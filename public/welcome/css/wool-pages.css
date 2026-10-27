@@ -195,6 +195,11 @@
 .ww-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 
 /* Pager (Laravel pagination) */
+/* Product catalogue */
+.ww-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:44px}
+.ww-filter a{padding:9px 18px;font-size:11.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ww-green-700);border:1px solid var(--ww-line);border-radius:30px;transition:.3s}
+.ww-filter a:hover,.ww-filter a.active{color:#fff;background:var(--ww-green-900);border-color:var(--ww-green-900)}
+.ww-product .ww-link{margin-top:16px}
 .ww-pager{margin-top:44px}
 .ww-pager nav{display:flex;justify-content:center}
 .ww-pager svg{width:18px}

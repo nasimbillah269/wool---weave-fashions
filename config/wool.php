@@ -43,7 +43,6 @@ return [
         ['Products', 'collection', [
             ['Global Collection 2027', 'collection'],
             ['Sustainable Fabric Library', 'fabric-library'],
-            ['Product Catalogue', 'products'],
         ]],
         ['Sustainability', 'sustainability', [
             ['Sustainability / ESG', 'sustainability'],

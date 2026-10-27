@@ -125,12 +125,22 @@ class WelcomeController extends Controller
     	return view(welcomeTheme().'index',compact('latestServices','latestPosts'));
     }
 
-    public function products(){
+    public function products(Request $r){
       $categories =Attribute::where('type',10)->where('status','active')->whereNull('parent_id')
       ->orderBy('name')
       ->get();
 
-      return view(welcomeTheme().'products.productCategories',compact('categories'));
+      // Product Catalogue: all active products, optionally filtered by a top-level category (?category=slug)
+      $category =$r->category ? $categories->firstWhere('slug',$r->category) : null;
+
+      $products =($category ? $category->activeProducts() : Post::where('type',2)->where('status','active')->whereDate('created_at','<=',date('Y-m-d')))
+      ->with('imageFile')
+      ->latest()
+      ->select(['id','name','slug','short_description','created_at'])
+      ->paginate(12)
+      ->withQueryString();
+
+      return view(welcomeTheme().'products.catalogue',compact('categories','category','products'));
     }
 
     public function productCategory($slug){
