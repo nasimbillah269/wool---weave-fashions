@@ -13,8 +13,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="{{asset(assetLink().'/css/wool-home.css')}}?v=21" />
-    <link rel="stylesheet" href="{{asset(assetLink().'/css/wool-pages.css')}}?v=5" />
+    <link rel="stylesheet" href="{{asset(assetLink().'/css/wool-home.css')}}?v=25" />
+    <link rel="stylesheet" href="{{asset(assetLink().'/css/wool-pages.css')}}?v=8" />
     @stack('css')
 </head>
 <body class="ww">
@@ -23,26 +23,23 @@
     $wwContactUrl = wwLink('contact');
     // Current page key, used to highlight the active menu item
     $wwCurrent = request()->routeIs('index') ? 'home' : (request()->routeIs('products', 'productCategory', 'productView') ? 'products' : request()->route('page'));
-    $wwCo = config('wool.company');
+    $wwCo = wwCompany();
+    // Header menu comes from Admin > Menus Setting ("Header Menus"); falls back to config/wool.php when it is empty
+    $wwHeaderMenu = menu('Header Menus');
+    $wwMenuKey = fn($m) => trim($m->menuLink() ?? '', '/') ?: 'home';
+    $wwNav = $wwHeaderMenu && $wwHeaderMenu->subMenus->count()
+        ? $wwHeaderMenu->subMenus->map(fn($m) => [$m->menuName(), $wwMenuKey($m), $m->subMenus->map(fn($s) => [$s->menuName(), $wwMenuKey($s)])->all()])->all()
+        : config('wool.nav');
 @endphp
 
 <!-- ================= Header ================= -->
 <header class="ww-header" id="wwHeader">
     <div class="ww-container ww-header-in">
-        <a href="{{route('index')}}" class="ww-logo ww-logo-main" aria-label="Wool &amp; Weave Fashions Ltd.">
-            <svg class="ww-logo-w" viewBox="0 0 64 46" aria-hidden="true">
-                <defs>
-                    <linearGradient id="wwGoldW" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0" stop-color="#f3dfae"/><stop offset=".5" stop-color="#c9a35c"/><stop offset="1" stop-color="#97702f"/>
-                    </linearGradient>
-                </defs>
-                <path d="M1 3h11l11 30 7-19-4-11h11l11 30L59 3h4L47 45h-3L33 16 22 45h-3z" fill="url(#wwGoldW)"/>
-                <path d="M13 3l14 38M39 3l14 38" stroke="rgba(255,255,255,.35)" stroke-width=".6" fill="none"/>
-            </svg>
+        <a href="{{route('index')}}" class="ww-logo ww-logo-main" aria-label="Wool &amp; Weave Fashion Ltd.">
+           <img src="{{asset(general()->logo())}}" alt="Wool &amp; Weave Fashion Ltd.">
             <span class="ww-logo-text">
                 <b>Wool &amp; Weave</b>
-                <small>Fashions Ltd.</small>
-                <em>People <i></i> Planet <i></i> Possibilities</em>
+                <small>Fashion Ltd.</small>
             </span>
         </a>
 
@@ -53,7 +50,7 @@
                 <button type="button" class="ww-nav-close" data-ww-nav="close" aria-label="Close menu"><i class="ti ti-x"></i></button>
             </div>
             <ul class="ww-menu">
-                @foreach(config('wool.nav') as $item)
+                @foreach($wwNav as $item)
                 @php
                     [$label, $key] = $item; $children = $item[2] ?? [];
                     $active = $key === $wwCurrent || collect($children)->contains(fn($c) => $c[1] === $wwCurrent);
@@ -91,8 +88,8 @@
     <div class="ww-container ww-footer-grid">
         <div class="ww-footer-about">
             <a href="{{route('index')}}" class="ww-logo">
-                <span class="ww-logo-mark">W</span>
-                <span class="ww-logo-text"><b>Wool &amp; Weave</b><small>Fashions Ltd.</small></span>
+                <img src="{{asset(general()->logo())}}" alt="Wool &amp; Weave Fashion Ltd." class="ww-footer-logo">
+                <span class="ww-logo-text"><b>Wool &amp; Weave</b><small>Fashion Ltd.</small></span>
             </a>
             <p>A multinational textile, apparel and supply-chain platform. From fibre to market, one intelligent platform across Bangladesh, India, China, Indonesia and Vietnam.</p>
         </div>
@@ -116,6 +113,9 @@
             <h5>Get in Touch</h5>
             <ul class="ww-footer-contact">
                 <li><i class="ti ti-map-pin"></i><span>{{ $wwCo['address'] }}</span></li>
+                @if(general()->mobile)
+                <li><i class="ti ti-phone"></i><a href="tel:{{ preg_replace('/[^0-9+]/', '', general()->mobile) }}">{{ general()->mobile }}</a></li>
+                @endif
                 <li><i class="ti ti-mail"></i><a href="mailto:{{ $wwCo['email'] }}">{{ $wwCo['email'] }}</a></li>
                 <li><i class="ti ti-world"></i><span>{{ $wwCo['web'] }}</span></li>
             </ul>
@@ -130,8 +130,8 @@
                 <li>People</li><li>Planet</li><li>Innovation</li><li>Partnership</li><li>Progress</li>
             </ul>
             <div class="ww-footer-brand">
-                <span class="ww-logo-mark sm">W</span>
-                <span><b>Wool &amp; Weave Fashions Ltd.</b><small>A multi-billion dollar company in the making</small></span>
+                <img src="{{asset(general()->logo())}}" alt="" class="ww-footer-logo sm">
+                <span><b>Wool &amp; Weave Fashion Ltd.</b></span>
             </div>
             <div class="ww-social">
                 <a href="{{ general()->facebook_link ?: '#' }}" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -141,7 +141,7 @@
             </div>
         </div>
     </div>
-    <div class="ww-copy">&copy; {{ date('Y') }} Wool &amp; Weave Fashions Ltd. All rights reserved.</div>
+    <div class="ww-copy">&copy; {{ date('Y') }} Wool &amp; Weave Fashion Ltd. All rights reserved.</div>
 </footer>
 
 <script>

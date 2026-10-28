@@ -104,9 +104,40 @@
     // Hero artwork: public/welcome/images/wool/hero.webp (or .jpg/.png) to replace the layered stock photos
     $wwHeroFile = collect(['webp', 'jpg', 'png'])->map(fn($ext) => 'welcome/images/wool/hero.'.$ext)->first(fn($f) => file_exists(public_path($f)));
     $wwHeroCustom = $wwHeroFile ? asset($wwHeroFile).'?v='.filemtime(public_path($wwHeroFile)) : null;
+    // Arcs traced over the globe in hero.webp (2073x496 image pixels), animated on top of the artwork
+    $wwHeroArcs = [
+        'M1316 219 Q1558 2 1688 177',
+        'M1432 128 Q1478 95 1552 150',
+        'M1404 219 Q1405 160 1432 128',
+        'M1316 219 Q1360 201 1404 219',
+        'M1316 219 Q1350 140 1432 128',
+        'M1552 150 Q1620 127 1688 177',
+        'M1688 177 Q1784 100 1845 167',
+        'M1404 219 Q1507 200 1582 237',
+        'M1466 297 Q1516 237 1582 237',
+        'M1466 297 Q1563 189 1688 177',
+        'M1582 237 Q1675 171 1769 301',
+        'M1582 237 Q1640 262 1690 305',
+        'M1582 237 Q1625 193 1688 177',
+        'M1690 305 Q1731 271 1769 301',
+        'M1769 301 Q1805 232 1821 216',
+        'M1821 216 Q1854 215 1871 234',
+    ];
+    $wwHeroHubs = [[1582, 237], [1769, 301], [1404, 219], [1466, 297], [1688, 177], [1690, 305], [1821, 216], [1432, 128], [1552, 150], [1316, 219]];
 @endphp
 <section class="ww-hero {{ $wwHeroCustom ? 'ww-hero-custom' : '' }}">
     <div class="ww-hero-bg" style="background-image:url('{{ $wwHeroCustom ?: $img('1517685352821-92cf88aee5a5', 1920, 1100) }}')"></div>
+    @if($wwHeroCustom)
+    <svg class="ww-hero-arcs" viewBox="0 0 2073 496" data-img-w="2073" data-img-h="496" aria-hidden="true">
+        @foreach($wwHeroArcs as $i => $d)
+        <path d="{{ $d }}" pathLength="1" class="ww-arc-glow" style="animation-delay:-{{ $i * 0.55 }}s"/>
+        <path d="{{ $d }}" pathLength="1" class="ww-arc-flow" style="animation-delay:-{{ $i * 0.55 }}s"/>
+        @endforeach
+        @foreach($wwHeroHubs as $i => [$x, $y])
+        <circle cx="{{ $x }}" cy="{{ $y }}" r="5" class="ww-arc-pulse" style="animation-delay:{{ $i * 0.35 }}s"/>
+        @endforeach
+    </svg>
+    @endif
     @unless($wwHeroCustom)
     <div class="ww-hero-art" aria-hidden="true">
         <div class="ww-hero-earth">
@@ -140,8 +171,9 @@
     <div class="ww-container ww-hero-grid">
         <div class="ww-hero-copy" data-reveal>
             <h1>Weaving<br>a Better Tomorrow</h1>
+            <p class="ww-hero-motto">People <i></i> Planet <i></i> Possibilities</p>
             <p class="ww-hero-tag">Sustainable fashion for a brighter world</p>
-            <p class="ww-hero-text">Wool &amp; Weave Fashions Ltd. is a global, technology-driven, sustainability-focused innovation platform, delivering exceptional textile, apparel and home solutions to the world's most respected brands.</p>
+            <p class="ww-hero-text">Wool &amp; Weave Fashion Ltd. is a global, technology-driven, sustainability-focused innovation platform, delivering exceptional textile, apparel and home solutions to the world's most respected brands.</p>
             <a href="{{ wwLink('collection') }}" class="ww-btn ww-btn-gold">Explore Our Collection <i class="ti ti-arrow-right"></i></a>
         </div>
 
@@ -305,6 +337,43 @@
 
 @push('js')
 <script>
+    // Keep the arc overlay locked onto the hero image, whatever background-size/position the breakpoint uses
+    (function(){
+        var svg = document.querySelector('.ww-hero-arcs'),
+            bg = document.querySelector('.ww-hero-bg');
+        if(!svg || !bg) return;
+        var iw = +svg.dataset.imgW, ih = +svg.dataset.imgH;
+        function len(v, box, img){
+            return v.slice(-1) === '%' ? (box - img) * parseFloat(v) / 100 : parseFloat(v) || 0;
+        }
+        function dim(v, box){
+            if(!v || v === 'auto') return null;
+            return v.slice(-1) === '%' ? box * parseFloat(v) / 100 : parseFloat(v);
+        }
+        function place(){
+            var cs = getComputedStyle(bg), W = bg.offsetWidth, H = bg.offsetHeight, w, h;
+            var size = cs.backgroundSize.split(' ');
+            if(size[0] === 'cover'){
+                var s = Math.max(W / iw, H / ih); w = iw * s; h = ih * s;
+            } else if(size[0] === 'contain'){
+                var c = Math.min(W / iw, H / ih); w = iw * c; h = ih * c;
+            } else {
+                w = dim(size[0], W); h = dim(size[1], H);
+                if(w === null && h === null){ w = iw; h = ih; }
+                else if(w === null) w = h * iw / ih;
+                else if(h === null) h = w * ih / iw;
+            }
+            var pos = cs.backgroundPosition.split(' ');
+            svg.style.left = bg.offsetLeft + len(pos[0], W, w) + 'px';
+            svg.style.top = bg.offsetTop + len(pos[1] || '50%', H, h) + 'px';
+            svg.style.width = w + 'px';
+            svg.style.height = h + 'px';
+        }
+        place();
+        window.addEventListener('resize', place);
+        window.addEventListener('load', place);
+    })();
+
     // Animated counters in the stats band
     (function(){
         var counters = document.querySelectorAll('.ww-count');

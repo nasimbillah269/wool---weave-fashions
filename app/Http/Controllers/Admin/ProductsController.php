@@ -155,6 +155,10 @@ class ProductsController extends Controller
                 'seo_title' => 'nullable|max:200',
                 'seo_description' => 'nullable|max:250',
                 'categoryid.*' => 'nullable|numeric',
+                'spec_label.*' => 'nullable|max:100',
+                'spec_value.*' => 'nullable|max:500',
+                'benefits' => 'nullable|max:2000',
+                'benefits_title' => 'nullable|max:100',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
                 'gallery_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             ]);
@@ -164,6 +168,15 @@ class ProductsController extends Controller
             // Projects: live site link is stored in the (otherwise unused) "tags" column
             $product->tags=$r->link?:null;
             $product->description=$r->description;
+            $values =$r->input('spec_value', []);
+            $rows =collect($r->input('spec_label', []))
+              ->map(fn($label, $i) => ['label' => trim((string)$label), 'value' => trim((string)($values[$i] ?? ''))])
+              ->filter(fn($row) => $row['label'] !== '' && $row['value'] !== '')->values()->all();
+            $specs =$rows ? ['rows' => $rows] : [];
+            $benefits =collect(preg_split('/\r\n|\r|\n/', (string)$r->benefits))->map(fn($b) => trim($b))->filter()->values()->all();
+            if($benefits) $specs['benefits'] =$benefits;
+            if($benefits && trim((string)$r->benefits_title) !== '') $specs['benefits_title'] =trim($r->benefits_title);
+            $product->specs=$specs ?: null;
             $product->seo_title=$r->seo_title;
             $product->seo_description=$r->seo_description;
             $product->seo_keyword=$r->seo_keyword;

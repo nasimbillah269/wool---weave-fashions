@@ -202,7 +202,7 @@ class AdminController extends Controller
             'district' => 'nullable|numeric',
             'city' => 'nullable|numeric',
             'postal_code' => 'nullable|max:20',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
           ]);
   
           $user->name =$r->name;
@@ -1166,8 +1166,8 @@ class AdminController extends Controller
                 'name' => 'required|max:191',
                 'seo_title' => 'nullable|max:200',
                 'seo_desc' => 'nullable|max:200',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+                'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             ]);
     
             if(!$check){
@@ -2035,9 +2035,9 @@ class AdminController extends Controller
         $check = $r->validate([
             'name' => 'required|max:191',
             'location' => 'nullable|max:200',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // 'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:25600',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            // 'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:25600',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $activeGallery =Attribute::where('type',4)->where('location',$r->location)->whereNotIn('id',[$gallery->id])->first();
@@ -2336,7 +2336,7 @@ class AdminController extends Controller
                  'city' => 'nullable|max:191',
                  'postal_code' => 'nullable|max:20',
                  'role' => 'nullable|numeric',
-                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
      
              ]);
      
@@ -2550,7 +2550,7 @@ class AdminController extends Controller
                 'city' => 'nullable|numeric',
                 'created_at' => 'nullable|date|max:50',
                 'postal_code' => 'nullable|max:20',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             ]);
     
           $user->name =$r->name;
@@ -2892,9 +2892,9 @@ public function userRoles(Request $r){
             'meta_author' => 'nullable|max:100',
             'meta_title' => 'nullable|max:200',
             'meta_description' => 'nullable|max:200',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'favicon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'favicon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $general->title=$r->title;
@@ -3286,7 +3286,7 @@ public function userRoles(Request $r){
         }elseif($r->itemtype=='image'){
             $check = $r->validate([
                 'gridColumn' => 'nullable|numeric',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:10240',
             ]);
             
             ///////Image UploadStart////////////

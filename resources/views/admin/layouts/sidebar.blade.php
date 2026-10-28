@@ -113,7 +113,7 @@
          isset(json_decode($roles->permission, true)['services']['list']) ||
          isset(json_decode($roles->permission, true)['servicesOthers']['category'])
          )
-         <li class=" nav-item"><a href="#"><i class="fas fa-box-open"></i><span class="menu-title" >Projects </span></a>
+         <li class=" nav-item"><a href="#"><i class="fas fa-box-open"></i><span class="menu-title" >Home Products </span></a>
            <ul class="menu-content">
 
             @isset(json_decode($roles->permission, true)['services']['list'])
@@ -122,17 +122,17 @@
              @else
              {{Request::is('admin/products*')? 'active' : ''}}
              @endif
-             "><a class="menu-item" href="{{route('admin.products')}}">All Projects</a>
+             "><a class="menu-item" href="{{route('admin.products')}}">All Products</a>
              </li>
              @endisset
 
              @isset(json_decode($roles->permission, true)['services']['add'])
-             <li><a class="menu-item" href="{{route('admin.productsAction','create')}}" >New Project</a>
+             <li><a class="menu-item" href="{{route('admin.productsAction','create')}}" >New Product</a>
              </li>
              @endisset
 
               @isset(json_decode($roles->permission, true)['servicesOthers']['category'])
-             <li class="{{Request::is('admin/products/categories*')? 'active' : ''}}"><a class="menu-item" href="{{route('admin.productsCategories')}}">Categories</a>
+             <li class="{{Request::is('admin/products/categories*')? 'active' : ''}}"><a class="menu-item" href="{{route('admin.productsCategories')}}">Product Categories</a>
              </li>
              @endisset
 

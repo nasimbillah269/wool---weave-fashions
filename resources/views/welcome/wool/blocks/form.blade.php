@@ -1,7 +1,7 @@
 @php
     $wwTypes = config('wool.enquiry_types');
     $wwType = old('type', array_key_exists((string) request('type'), $wwTypes) ? request('type') : 'product');
-    $wwCo = config('wool.company');
+    $wwCo = wwCompany();
     $wwFields = [
         ['name', 'Full name', 'text', true],
         ['company', 'Company', 'text', false],

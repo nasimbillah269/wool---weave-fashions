@@ -177,8 +177,8 @@ class PostsController extends Controller
             'seo_description' => 'nullable|max:250',
             'catagoryid.*' => 'nullable|numeric',
             'tags.*' => 'nullable|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $post->name=$r->name;
@@ -665,8 +665,8 @@ class PostsController extends Controller
             'name' => 'required|max:191',
             'seo_title' => 'nullable|max:200',
             'seo_desc' => 'nullable|max:200',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $category->name=$r->name;

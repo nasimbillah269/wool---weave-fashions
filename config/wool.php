@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Wool & Weave Fashions Ltd. — website content
+| Wool & Weave Fashion Ltd. — website content
 |--------------------------------------------------------------------------
 | Source: "Wool & Weave Corporate Profile 2027" and
 | "Wool & Weave Luxury Website Architecture 2027".
@@ -18,7 +18,7 @@
 return [
 
     'company' => [
-        'name'    => 'Wool & Weave Fashions Ltd.',
+        'name'    => 'Wool & Weave Fashion Ltd.',
         'tagline' => 'Engineering the Future of Fashion',
         'motto'   => 'Innovate • Deliver • Scale Responsibly',
         'address' => '465, Road 8, DOHS Baridhara, Dhaka, Bangladesh',
@@ -67,7 +67,7 @@ return [
             'title'    => 'Company',
             'subtitle' => 'From fibre to market. One intelligent platform.',
             'hero'     => '1445205170230-053b83016050',
-            'lead'     => 'Wool & Weave Fashions Ltd. is a multinational textile, apparel and supply-chain platform integrating product development, sourcing, manufacturing, quality, sustainability, traceability, logistics, warehousing and commercial execution.',
+            'lead'     => 'Wool & Weave Fashion Ltd. is a multinational textile, apparel and supply-chain platform integrating product development, sourcing, manufacturing, quality, sustainability, traceability, logistics, warehousing and commercial execution.',
             'pillars'  => ['Global Platform', '5 Countries', 'One Interface'],
             'sections' => [
                 ['type' => 'modules', 'eyebrow' => 'Who we are', 'title' => 'A concise institutional story', 'items' => [
@@ -96,24 +96,40 @@ return [
             'number'   => '03',
             'eyebrow'  => 'About Us',
             'title'    => 'Leadership',
-            'subtitle' => 'Experience, accountability and entrepreneurial execution.',
+            'subtitle' => 'Visionary stewardship • Global sourcing • Responsible growth',
             'hero'     => '1556761175-b413da4baf72',
-            'lead'     => 'Our leadership team combines textile, apparel, finance and commercial experience with a shared commitment to good governance, clear strategy and disciplined execution.',
-            'pillars'  => ['Governance', 'Strategy', 'Execution'],
+            'lead'     => 'The leadership team of Wool & Weave Fashion Ltd. brings together founder-led continuity and functional oversight across international business, sourcing, manufacturing partnerships, operations, finance and merchandising.',
+            'pillars'  => ['Visionary stewardship', 'Global sourcing', 'Responsible growth'],
             'sections' => [
-                ['type' => 'leaders', 'eyebrow' => 'Leadership team', 'title' => 'The people behind the platform', 'items' => [
-                    ['Dr. Raashid Ashraf Khan', 'Group CEO & Board Director'],
-                    ['MD. Kamrul Islam', 'Founder Executive Chairman'],
-                    ['Nurul Alam', 'Managing Director'],
-                    ['MD. Sikander Ali', 'Finance Director'],
-                    ['Musfeq Salehin', 'Chief Operating Officer'],
-                    ['Tasyeea Meraz', 'Manager, Marketing & Merchandising'],
+                // [name, role, biography, leadership focus]
+                ['type' => 'leaders', 'eyebrow' => 'Our leadership', 'title' => 'Executive Leadership', 'items' => [
+                    ['Md. Kamrul Islam', 'Executive Chairman',
+                        'A founding leader of Wool & Weave Fashion Ltd., established in 2014, Mr. Md. Kamrul Islam provides strategic stewardship and continuity of the company’s founding vision. As Executive Chairman, his role encompasses board-level direction, corporate governance, long-term partnerships and the alignment of group priorities with sustainable business growth.',
+                        'Strategic direction, governance, investment oversight and enduring stakeholder relationships.'],
+                    ['Dr. Raashid Ashraf Khan', 'Group Chief Executive Officer & Board Director',
+                        'Dr. Raashid Ashraf Khan assumed leadership as Group CEO and Board Director in 2026. He leads the company’s global expansion agenda, integrating international marketing, product development, research and innovation, sourcing, manufacturing partnerships and supply-chain solutions. His mandate places particular emphasis on sustainability-led growth, advanced technology and the development of an internationally connected fibre-to-apparel ecosystem.',
+                        'International business development, multinational sourcing, R&D, digital transformation and sustainable scale.'],
+                    ['Md. Nurul Alam', 'Managing Director',
+                        'Mr. Md. Nurul Alam helped establish Wool & Weave Fashion Ltd. in 2014 alongside the Founder Chairman. As Managing Director, he supports the company’s enterprise management, commercial execution and development of long-term relationships with buyers, supply partners and other stakeholders. His position bridges the founders’ original business mission with the company’s next phase of organisational growth.',
+                        'Business stewardship, cross-functional coordination, commercial execution and partner engagement.'],
                 ]],
-                ['type' => 'modules', 'eyebrow' => 'Governance philosophy', 'title' => 'How we lead', 'items' => [
-                    ['Governance', 'Clear accountability, transparent decision-making and verified information for customers, partners and investors.', '1600880292203-757bb62b4baf'],
-                    ['Strategy', 'A multi-country platform designed for resilience, innovation and long-term partnerships with global brands.', '1494412574643-ff11b0a5c1c3'],
-                    ['Execution', 'Entrepreneurial delivery across development, sourcing, manufacturing, quality and logistics.', '1612423284934-2850a4ea6b0f'],
+                ['type' => 'leaders', 'eyebrow' => 'Our leadership', 'title' => 'Functional Leadership', 'items' => [
+                    ['Sikander Ali', 'Finance Director',
+                        'As Finance Director, Mr. Sikander Ali provides leadership for financial oversight and management disciplines across the business. His remit is presented around financial planning, budgeting, management reporting, working capital discipline and the financial evaluation of investments and operating decisions in a multi-market supply-chain environment.',
+                        'Financial controls, cash-flow planning, budgeting, risk visibility and management reporting.'],
+                    ['Khondoker Musfeq Salehin', 'Chief Operating Officer (COO)',
+                        'Mr. Khondoker Musfeq Salehin leads operational coordination with a focus on translating buyer requirements into reliable merchandising and delivery performance. The COO function connects sourcing, product development, factory execution, quality management and day-to-day commercial follow-through, supporting the company’s commitment to dependable and responsible operations.',
+                        'Merchandising oversight, execution discipline, factory coordination, delivery performance and service quality.'],
+                    ['Tasyeea Meraz', 'Manager, Marketing & Merchandising',
+                        'Ms. Tasyeea Meraz supports buyer engagement and the merchandising lifecycle, from product enquiries and development follow-up through costing coordination, sample management, order communication and production milestones. Her role links customer expectations with cross-functional teams and manufacturing partners, helping maintain clear communication and consistent execution.',
+                        'Buyer communication, product development follow-up, order coordination and merchandising performance.'],
                 ]],
+                ['type' => 'checklist', 'eyebrow' => 'Leadership philosophy', 'title' => 'Our Leadership Philosophy',
+                    'text'  => 'At Wool & Weave Fashion Ltd., leadership is anchored in integrity, accountability, innovation and partnership. The team seeks to build an agile global supply-chain platform where ethical sourcing, product quality, commercial competitiveness and environmental responsibility reinforce one another.',
+                    'steps' => ['Integrity', 'Accountability', 'Innovation', 'Partnership'],
+                    'items' => ['Ethical sourcing', 'Product quality', 'Commercial competitiveness', 'Environmental responsibility'],
+                ],
+                ['type' => 'note', 'text' => 'Together, the leadership team is focused on supporting international brands, retailers, importers and partners with connected solutions spanning fibres, yarns, fabrics, apparel, home textiles, technology and supply-chain services.'],
             ],
         ],
 
@@ -259,12 +275,6 @@ return [
             'lead'     => 'Wool & Weave works through strategic partner factories and JV relationships, matching product categories with specialist capability while applying common expectations for development, quality, delivery, sustainability, compliance evidence and customer communication.',
             'pillars'  => ['JV', 'Partners', 'Governance'],
             'sections' => [
-                ['type' => 'split', 'eyebrow' => 'Apparel manufacturing platform', 'title' => 'Rio Design & Fashion Ltd. and partner factories',
-                    'text'  => 'The apparel platform is structured around woven and knit tops and bottoms, supported by cutting and finishing capability.',
-                    'image' => '1612423284934-2850a4ea6b0f',
-                    'stats' => [['~60', 'Sewing lines (planned)'], ['~3,000', 'Machines (planned)']],
-                    'steps' => ['Cut', 'Sew', 'Finish', 'Assure'],
-                ],
                 ['type' => 'modules', 'eyebrow' => 'Capability-led', 'title' => 'How the network is managed', 'items' => [
                     ['Capability mapping', 'Each category is matched to the partner with the right specialist capability.', '1584184924103-e310d9dc82fc'],
                     ['Capacity', 'Capacity is allocated by capability, geography, cost, lead time and risk.', '1558769132-cb1aea458c5e'],

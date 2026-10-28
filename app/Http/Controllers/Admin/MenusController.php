@@ -407,7 +407,7 @@ class MenusController extends Controller
     
             $check = $r->validate([
                 'icon' => 'nullable|max:50',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             ]);
     
             

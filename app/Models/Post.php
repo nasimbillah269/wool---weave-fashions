@@ -6,7 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    
+    // Product specifications: ['rows' => [['label' => .., 'value' => ..], ...], 'benefits' => [..]]
+    protected $casts = ['specs' => 'array'];
+
+    // Starter spec rows offered on a product that has none yet
+    public const DEFAULT_SPEC_LABELS = ['Style No.', 'Composition', 'Fabric / GSM', 'Fit', 'Size Range', 'Finish', 'Colours'];
+
+    public function specRows(){
+        return collect($this->specs['rows'] ?? [])->filter(fn($r) => ($r['label'] ?? '') !== '' && ($r['value'] ?? '') !== '')->values();
+    }
+
     //Models Information Data
     /********
      * 

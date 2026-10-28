@@ -348,6 +348,18 @@ function serviceFaqs($service){
   return is_array($faqs) ? array_values(array_filter($faqs, fn($f) => !empty($f['q']))) : [];
 }
 
+// Wool & Weave: company details, with address / email / website taken from Admin > General Settings when filled
+function wwCompany(){
+  $co = config('wool.company');
+  $g = general();
+  if($g){
+    $co['address'] = $g->address_one ?: $co['address'];
+    $co['email'] = $g->email ?: $co['email'];
+    $co['web'] = $g->website ? preg_replace('#^https?://|/$#', '', $g->website) : $co['web'];
+  }
+  return $co;
+}
+
 // Wool & Weave: turn a page key from config/wool.php ("company", "contact?type=buyer", "home", "products") into a URL
 function wwLink($key){
   [$page, $query] = array_pad(explode('?', $key, 2), 2, null);

@@ -167,7 +167,16 @@ class WelcomeController extends Controller
 
       $category =$product->productCategories()->first();
 
-      return view(welcomeTheme().'products.productView',compact('product','category'));
+      // Related: other active products from the same category
+      $relatedProducts =$category ? $category->activeProducts()
+      ->where('id','<>',$product->id)
+      ->with('imageFile')
+      ->latest()
+      ->select(['id','name','slug'])
+      ->limit(4)
+      ->get() : collect();
+
+      return view(welcomeTheme().'products.productView',compact('product','category','relatedProducts'));
     }
 
     public function serviceCategory($slug){
