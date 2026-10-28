@@ -192,7 +192,7 @@ main{overflow-x:clip}
 .ww-stat{display:flex;align-items:center;gap:14px;padding:0 20px;border-right:1px solid rgba(255,255,255,.1)}
 .ww-stat:first-child{padding-left:0}
 .ww-stat > i{flex-shrink:0;font-size:32px;color:var(--ww-gold)}
-.ww-stat strong{display:block;font-family:var(--ww-serif);font-size:44px;font-weight:600;line-height:1;color:#fff}
+.ww-stat strong{display:block;font-family:"Jost",sans-serif;font-size:40px;font-weight:500;line-height:1;color:#fff}
 .ww-stat div > span{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.12em;line-height:1.5;text-transform:uppercase;color:rgba(255,255,255,.65)}
 .ww-goal{display:flex;align-items:center;gap:22px;margin:22px 0 22px 28px;padding:28px 30px;border-radius:4px;color:var(--ww-green-950);background:linear-gradient(135deg,#e8d3a3 0%,var(--ww-gold) 55%,#a37a38 100%);box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
 .ww-goal > i{flex-shrink:0;font-size:60px;color:var(--ww-green-900)}
