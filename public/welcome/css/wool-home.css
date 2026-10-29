@@ -68,7 +68,7 @@ main{overflow-x:clip}
 .ww-header{position:fixed;inset:0 0 auto;z-index:100;height:var(--ww-header-h);color:#fff;background:linear-gradient(180deg,rgba(6,14,26,.6) 0%,rgba(6,14,26,0) 100%);transition:background .4s,box-shadow .4s,height .4s}
 .ww-header.scrolled{--ww-header-h:72px;background:rgba(8,26,20,.96);box-shadow:0 10px 30px -15px rgba(0,0,0,.5)}
 .ww-header-in{height:100%;display:flex;align-items:center;justify-content:space-between;gap:28px}
-.ww-header a img{width:100%;background:#fff;max-width:101px}
+.ww-header a img{width:100%;max-width:140px}
 .ww-nav{display:flex;align-items:center}
 .ww-menu{display:flex;align-items:center;gap:20px}
 .ww-menu a{position:relative;display:block;font-size:11.5px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:#fff;padding:8px 0;white-space:nowrap}
@@ -400,7 +400,7 @@ main{overflow-x:clip}
 }
 @media (max-width:767px){
     .ww-hero{padding-top:calc(var(--ww-header-h) + 26px);padding-bottom:440px}
-    .ww-hero-copy h1{white-space:normal;font-size:40px}
+    .ww-hero-copy h1{white-space:normal;font-size:18px}
     .ww-hero-tag{white-space:normal;font-size:12px;letter-spacing:.14em}
     .ww-hero-copy .ww-btn{width:100%}
     .ww-hero-art{height:470px}

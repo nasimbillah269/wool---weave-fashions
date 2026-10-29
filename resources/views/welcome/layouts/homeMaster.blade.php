@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="{{asset(assetLink().'/css/wool-home.css')}}?v=26" />
+    <link rel="stylesheet" href="{{asset(assetLink().'/css/wool-home.css')}}?v=28" />
     <link rel="stylesheet" href="{{asset(assetLink().'/css/wool-pages.css')}}?v=8" />
     @stack('css')
 </head>
