@@ -171,7 +171,6 @@
     <div class="ww-container ww-hero-grid">
         <div class="ww-hero-copy" data-reveal>
             <h1>Weaving<br>a Better Tomorrow</h1>
-            <p class="ww-hero-motto">People <i></i> Planet <i></i> Possibilities</p>
             <p class="ww-hero-tag">Sustainable fashion for a brighter world</p>
             <p class="ww-hero-text">Wool &amp; Weave Fashion Ltd. is a global, technology-driven, sustainability-focused innovation platform, delivering exceptional textile, apparel and home solutions to the world's most respected brands.</p>
             <a href="{{ wwLink('collection') }}" class="ww-btn ww-btn-gold">Explore Our Collection <i class="ti ti-arrow-right"></i></a>

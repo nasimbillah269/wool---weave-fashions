@@ -1,4 +1,4 @@
-<section class="ww-block">
+<section class="ww-block {{ !empty($block['cream']) ? 'ww-block-cream' : '' }}">
     <div class="ww-container ww-checklist">
         <div data-reveal>
             @include(welcomeTheme().'wool.blocks._head')
