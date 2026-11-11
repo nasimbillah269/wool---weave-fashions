@@ -520,14 +520,13 @@ class WelcomeController extends Controller
             return back()->withInput();
         }
 
-        if(general()->mail_status && general()->mail_from_address){
+        if(mailReady() && ($toEmail = adminMailRecipients())){
             //Mail Data
             $datas =array('r'=>$r);
             $template ='mails.ContactMail';
-            $toEmail =general()->mail_from_address;
             $toName =general()->mail_from_name;
             $subject ='Contact Mail Form '.general()->title;
-            sendMail($toEmail,$toName,$subject,$datas,$template);
+            sendMail($toEmail,$toName,$subject,$datas,$template,null,$r->email);
         }
 
       Session()->flash('success','Your form send successfully done. We are response as soon as possible.');

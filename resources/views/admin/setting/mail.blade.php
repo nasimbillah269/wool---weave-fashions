@@ -68,7 +68,6 @@
                                                 <option value="smtp" {{$general->mail_driver=='smtp'?'selected':''}}>SMTP</option>
                                                 <option value="mailgun" {{$general->mail_driver=='mailgun'?'selected':''}}>Mailgun</option>
                                                 <option value="sendmail" {{$general->mail_driver=='sendmail'?'selected':''}}>Sendmail</option>
-                                                <option value="mail" {{$general->mail_driver=='mail'?'selected':''}}>Mail</option>
                                             </select>
                                             @if ($errors->has('mail_driver'))
                                             <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('mail_driver') }}</p>

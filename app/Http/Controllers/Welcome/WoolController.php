@@ -68,14 +68,16 @@ class WoolController extends Controller
         // Kept in the log as well, so no enquiry is lost if mail is not configured
         Log::info('Website enquiry', $enquiry);
 
-        if (general()->mail_status && general()->mail_from_address) {
+        // Mail server, sender and recipients all come from Admin > Mail Setting
+        if (mailReady() && ($to = adminMailRecipients())) {
             sendMail(
-                general()->mail_from_address,
+                $to,
                 general()->mail_from_name,
                 'Website enquiry: '.$enquiry['type'].' — '.$enquiry['name'],
                 ['enquiry' => $enquiry],
                 'mails.woolEnquiry',
-                $attachments
+                $attachments,
+                $enquiry['email']
             );
         }
 

@@ -126,17 +126,40 @@ function priceFullFormat($amount=0)
 
 }
 
-function sendMail($toEmail,$toName,$subject,$datas,$template,$attachments=null){
-    
+// Sender address for outgoing mail: "Mail From Address", or the SMTP username if that is empty
+function mailFromAddress(){
+  return general()->mail_from_address ?: general()->mail_username;
+}
+
+// Mail is usable when it is switched on in Admin > Mail Setting and has a sender address
+function mailReady(){
+  return general()->mail_status && mailFromAddress();
+}
+
+// Who receives website form mails: the "Author Mail" list (comma separated),
+// falling back to the sender address when no author mail is set
+function adminMailRecipients(){
+  $mails = array_filter(array_map('trim', explode(',', (string) general()->admin_mails)), function ($m) {
+    return filter_var($m, FILTER_VALIDATE_EMAIL);
+  });
+  return $mails ? array_values($mails) : array_filter([mailFromAddress()]);
+}
+
+function sendMail($toEmail,$toName,$subject,$datas,$template,$attachments=null,$replyTo=null){
+
   try {
-    Mail::send($template,compact('datas'), function ($message) use ($toEmail,$toName,$subject,$attachments) {
-        $message->from(general()->mail_from_address, general()->mail_from_name);
-        $message->to($toEmail,$toName);
-        //To bb mail 
-        //$message->cc($ccRecipients);
-        //To Replay diffrent mail 
-        //$message->replyTo('replyto@example.com', 'Reply To Name');
-        
+    Mail::send($template,compact('datas'), function ($message) use ($toEmail,$toName,$subject,$attachments,$replyTo) {
+        $message->from(mailFromAddress(), general()->mail_from_name ?: general()->title);
+        if(is_array($toEmail)){
+            $message->to($toEmail);
+        }else{
+            $message->to($toEmail,$toName);
+        }
+        // Replies from the inbox go straight to the visitor
+        if($replyTo && filter_var($replyTo, FILTER_VALIDATE_EMAIL)){
+            $message->replyTo($replyTo);
+        }
+
         $message->subject($subject);
         
         if($attachments){
@@ -151,8 +174,8 @@ function sendMail($toEmail,$toName,$subject,$datas,$template,$attachments=null){
         
     });
       return true;
-  } catch (Exception $ex) {
-      // Debug via $ex->getMessage();
+  } catch (\Throwable $ex) {
+      \Log::error('Mail sending failed: '.$ex->getMessage(), ['subject' => $subject, 'to' => $toEmail]);
       return false;
   }
 
