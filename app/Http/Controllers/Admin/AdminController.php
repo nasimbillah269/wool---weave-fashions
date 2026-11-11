@@ -169,19 +169,16 @@ class AdminController extends Controller
 
         // Dashboard overview: totals per content type (temp drafts excluded)
         $totals=[
-            'services'=>Post::where('type',3)->where('status','<>','temp')->count(),
-            'projects'=>Post::where('type',2)->where('status','<>','temp')->count(),
+            'products'=>Post::where('type',2)->where('status','<>','temp')->count(),
+            'activeProducts'=>Post::where('type',2)->where('status','active')->count(),
             'posts'=>Post::where('type',1)->where('status','<>','temp')->count(),
             'pages'=>$pagesTotal,
-            'testimonials'=>Attribute::where('type',3)->where('status','<>','temp')->count(),
-            'technologies'=>Attribute::where('type',2)->where('status','<>','temp')->count(),
             'sliders'=>Attribute::where('type',1)->where('status','<>','temp')->whereNotNull('parent_id')->count(),
             'users'=>$userTotal,
         ];
-        $recentServices=Post::latest()->where('type',3)->where('status','<>','temp')->limit(5)->get(['id','name','slug','status','created_at']);
-        $recentProjects=Post::latest()->where('type',2)->where('status','<>','temp')->limit(5)->get(['id','name','slug','status','created_at']);
-        
-        return view(adminTheme().'dashboard',compact('posts','reports','totals','recentServices','recentProjects'));
+        $recentProducts=Post::latest()->where('type',2)->where('status','<>','temp')->limit(10)->get(['id','name','slug','status','created_at']);
+
+        return view(adminTheme().'dashboard',compact('posts','reports','totals','recentProducts'));
       
     }
 
