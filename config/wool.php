@@ -130,8 +130,8 @@ return [
                         'Business stewardship, cross-functional coordination, commercial execution and partner engagement.'],
                 ]],
                 ['type' => 'leaders', 'eyebrow' => 'Our leadership', 'title' => 'Functional Leadership', 'items' => [
-                    ['Sikander Ali', 'Finance Director',
-                        'As Finance Director, Mr. Sikander Ali provides leadership for financial oversight and management disciplines across the business. His remit is presented around financial planning, budgeting, management reporting, working capital discipline and the financial evaluation of investments and operating decisions in a multi-market supply-chain environment.',
+                    ['MD. Sekender Ali', 'Finance Director',
+                        'As Finance Director, Mr. MD. Sekender Ali provides leadership for financial oversight and management disciplines across the business. His remit is presented around financial planning, budgeting, management reporting, working capital discipline and the financial evaluation of investments and operating decisions in a multi-market supply-chain environment.',
                         'Financial controls, cash-flow planning, budgeting, risk visibility and management reporting.'],
                     ['Khondoker Musfeq Salehin', 'Chief Operating Officer (COO)',
                         'Mr. Khondoker Musfeq Salehin leads operational coordination with a focus on translating buyer requirements into reliable merchandising and delivery performance. The COO function connects sourcing, product development, factory execution, quality management and day-to-day commercial follow-through, supporting the company’s commitment to dependable and responsible operations.',
